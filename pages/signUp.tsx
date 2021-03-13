@@ -20,7 +20,7 @@ const SignUp: FC = () => {
     e.preventDefault()
     try {
       await auth.createUserWithEmailAndPassword(email, password)
-      router.push('/login')
+      router.push('/logIn')
     } catch (err) {
       alert(err.message)
     }
@@ -55,7 +55,7 @@ const SignUp: FC = () => {
           SignUp
         </button>
       </form>
-      <Link href="/login">
+      <Link href="/logIn">
         <a className="auth-link">Login</a>
       </Link>
     </div>

@@ -53,8 +53,8 @@ const LogIn: FC = () => {
           Login
         </button>
       </form>
-      <Link href="/signup">
-        <a className="auth-link">signup</a>
+      <Link href="/signUp">
+        <a className="auth-link">signUp</a>
       </Link>
     </div>
   )

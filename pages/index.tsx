@@ -10,14 +10,14 @@ const Home: FC = (props: any) => {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      user ? setCurrentUser(user) : router.push('/login')
+      user ? setCurrentUser(user) : router.push('/logIn')
     })
   }, [])
 
   const logOut = async () => {
     try {
       await auth.signOut()
-      router.push('/login')
+      router.push('/logIn')
     } catch (error) {
       alert(error.message)
     }
