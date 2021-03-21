@@ -1,8 +1,46 @@
 import '../styles/globals.css'
 import '../src/utils/firebase'
+import 'tailwindcss/tailwind.css'
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import Layout from '../src/components/Layout'
+import { auth } from '../src/utils/firebase'
+import Sidebar from '../src/components/Sidebar'
+import Header from '../src/components/Header'
+
+const MyApp = ({ Component, pageProps }) => {
+  // return <Component {...pageProps} />
+
+  const router = useRouter()
+  const [currentUser, setCurrentUser] = useState<null | object>(null)
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      user ? setCurrentUser(user) : router.push('/logIn')
+    })
+  }, [])
+
+  const logOut = async () => {
+    try {
+      await auth.signOut()
+      router.push('/logIn')
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
+  return currentUser ? (
+    <div className="flex h-screen bg-gray-200 font-roboto">
+      <Sidebar/>
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header logOut={() => logOut()}/>
+        <Component {...pageProps} />
+      </div>
+    </div>
+  ) : (
+    <Component {...pageProps} />
+  )
 }
 
 export default MyApp
