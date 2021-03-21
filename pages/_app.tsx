@@ -10,7 +10,6 @@ import Sidebar from '../src/components/Sidebar'
 import Header from '../src/components/Header'
 
 const MyApp = ({ Component, pageProps }) => {
-  // return <Component {...pageProps} />
 
   const router = useRouter()
   const [currentUser, setCurrentUser] = useState<null | object>(null)
@@ -35,7 +34,9 @@ const MyApp = ({ Component, pageProps }) => {
       <Sidebar/>
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header logOut={() => logOut()}/>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </div>
     </div>
   ) : (
