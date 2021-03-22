@@ -1,6 +1,5 @@
 import '../styles/globals.css'
 import '../src/utils/firebase'
-import 'tailwindcss/tailwind.css'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
