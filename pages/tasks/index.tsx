@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import 'tailwindcss/tailwind.css'
 
 const Tasks: FC = (props: any) => (
   <div className="container mx-auto px-6 py-8">
