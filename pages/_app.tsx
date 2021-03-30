@@ -3,10 +3,16 @@ import '../src/utils/firebase'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import Layout from '../src/components/Layout'
 import { auth } from '../src/utils/firebase'
 import Sidebar from '../src/components/Sidebar'
 import Header from '../src/components/Header'
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: 'http://localhost:8080/v1/graphql',
+});
 
 const MyApp = ({ Component, pageProps }) => {
 
@@ -29,15 +35,17 @@ const MyApp = ({ Component, pageProps }) => {
   }
 
   return currentUser ? (
-    <div className="flex h-screen bg-gray-200 font-roboto">
-      <Sidebar/>
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header logOut={() => logOut()}/>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+    <ApolloProvider client={client}>
+      <div className="flex h-screen bg-gray-200 font-roboto">
+        <Sidebar/>
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <Header logOut={() => logOut()}/>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </div>
       </div>
-    </div>
+    </ApolloProvider>
   ) : (
     <Component {...pageProps} />
   )
