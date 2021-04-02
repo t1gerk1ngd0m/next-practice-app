@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { gql, useQuery } from '@apollo/client';
+import { format } from 'date-fns'
 
 const FETCH_TASKS = gql`
   query {
@@ -7,18 +8,19 @@ const FETCH_TASKS = gql`
       id
       name
       content
+      created_at
+      updated_at
     }
   }`;
 
 const Tasks: FC = (props: any) => {
 
-  // ここでエラーになる
-  // Invariant Violation: Could not find "client" in the context or passed in as an option. Wrap the root component in an <ApolloProvider>, or pass an ApolloClient instance in via options.
+const Tasks: FC = (props: any) => {
   const { loading, error, data } = useQuery(FETCH_TASKS);
 
   return (
-    <div className="container mx-auto px-6 py-8">
-      <h3 className="text-gray-700 text-3xl font-medium">Tasks</h3>
+    <div className="container px-6 py-8 mx-auto">
+      <h3 className="text-3xl font-medium text-gray-700">Tasks</h3>
       <div className="mt-4">
         <div className="p-6 bg-white rounded-md shadow-md">
           <form>
@@ -38,31 +40,27 @@ const Tasks: FC = (props: any) => {
           </form>
         </div>
         <div className="mt-6">
-          <div className="bg-white shadow rounded-md overflow-hidden my-6">
-            <table className="text-left w-full border-collapse">
+          <div className="my-6 overflow-hidden bg-white rounded-md shadow">
+            <table className="w-full text-left border-collapse">
               <thead className="border-b">
                 <tr>
-                  <th className="py-3 px-5 bg-indigo-800 font-medium uppercase text-sm text-gray-100">City</th>
-                  <th className="py-3 px-5 bg-indigo-800 font-medium uppercase text-sm text-gray-100">Total orders</th>
+                  <th className="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800">タスク名</th>
+                  <th className="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800">内容</th>
+                  <th className="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800">作成日時</th>
+                  <th className="px-5 py-3 text-sm font-medium text-gray-100 uppercase bg-indigo-800">更新日時</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="hover:bg-gray-200">
-                  <td className="py-4 px-6 border-b text-gray-700 text-lg">New York</td>
-                  <td className="py-4 px-6 border-b text-gray-500">200,120</td>
-                </tr>
-                <tr className="hover:bg-gray-200">
-                  <td className="py-4 px-6 border-b text-gray-700 text-lg">Manchester</td>
-                  <td className="py-4 px-6 border-b text-gray-500">632,310</td>
-                </tr>
-                <tr className="hover:bg-gray-200">
-                  <td className="py-4 px-6 border-b text-gray-700 text-lg">London</td>
-                  <td className="py-4 px-6 border-b text-gray-500">451,110</td>
-                </tr>
-                <tr className="hover:bg-gray-200">
-                  <td className="py-4 px-6 border-b text-gray-700 text-lg">Madrid</td>
-                  <td className="py-4 px-6 border-b text-gray-500">132,524</td>
-                </tr>
+                {data && data.tasks.map(task => {
+                  return (
+                    <tr className="hover:bg-gray-200" key={task.id}>
+                      <td className="px-6 py-4 text-lg text-gray-700 border-b">{task.name}</td>
+                      <td className="px-6 py-4 text-gray-500 border-b">{task.content}</td>
+                      <td className="px-6 py-4 text-gray-500 border-b">{format(new Date(task.created_at), 'yyyy/MM/dd')}</td>
+                      <td className="px-6 py-4 text-gray-500 border-b">{format(new Date(task.updated_at), 'yyyy/MM/dd')}</td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
