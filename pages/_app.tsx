@@ -34,20 +34,22 @@ const MyApp = ({ Component, pageProps }) => {
     }
   }
 
-  return currentUser ? (
+  return (
     <ApolloProvider client={client}>
-      <div className="flex h-screen bg-gray-200 font-roboto">
-        <Sidebar/>
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <Header logOut={() => logOut()}/>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+      {currentUser ? (
+        <div className="flex h-screen bg-gray-200 font-roboto">
+          <Sidebar/>
+          <div className="flex flex-col flex-1 overflow-hidden">
+            <Header logOut={() => logOut()}/>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </div>
         </div>
-      </div>
+      ) : (
+        <Component {...pageProps} />
+      )}
     </ApolloProvider>
-  ) : (
-    <Component {...pageProps} />
   )
 }
 
